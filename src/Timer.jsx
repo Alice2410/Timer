@@ -1,15 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const Timer = () => {
   const [timeCounter, setTimeCounter] = useState(0);
+  const paused = useRef(true);
 
   useEffect(() => {
-    const timeIntervalId = setInterval(() => setTimeCounter((counter) => counter + 1), 1000)
+    const timeIntervalId = setInterval(() => {
+      if (!paused.current) changeCounter()
+    }, 1000)
 
     return () => {
       clearInterval(timeIntervalId)
     };
   },[])
+
+  const toggleTimer = () => {
+    paused.current = !paused.current;
+  }
+
+  const changeCounter = () => {
+    setTimeCounter((counter) => counter + 1)
+  }
 
   const getFormatedTimeString = (time) => {
     return time < 10 ? `0${time}` : time;
@@ -25,7 +36,12 @@ const Timer = () => {
   }
 
   return(
-    <div>{getTime()}</div>
+    <div>
+      <button onClick={toggleTimer}>Start</button>
+      <br />
+      <br />
+      <span>{getTime()}</span>
+    </div>
   )
 };
 
