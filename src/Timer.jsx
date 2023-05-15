@@ -10,7 +10,11 @@ const Timer = () => {
       clearInterval(timeIntervalId)
     };
   },[])
- 
+
+  const getFormatedTimeString = (time) => {
+    return time < 10 ? `0${time}` : time;
+  }
+
   return(
     <div>Initialized</div>
   )
